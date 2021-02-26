@@ -1,18 +1,17 @@
 package ru.vasilev.unused_steps_plugin.providers;
 
 import com.intellij.codeInsight.AnnotationUtil;
-import com.intellij.codeInsight.daemon.ImplicitUsageProvider;
-import com.intellij.psi.PsiElement;
+import com.intellij.codeInspection.*;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifierListOwner;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.vasilev.unused_steps_plugin.checker.Checker;
 import ru.vasilev.unused_steps_plugin.checker.IsMethodUsedChecker;
 
 import java.util.Collection;
 import java.util.List;
 
-public class UnusedStepsProvider implements ImplicitUsageProvider {
+public class UnusedStepsProvider extends AbstractBaseJavaLocalInspectionTool {
 
     public static final String CUCUMBER_WHEN_ANNOTATION = "cucumber.api.java.en.When";
     public static final String CUCUMBER_THEN_ANNOTATION = "cucumber.api.java.en.Then";
@@ -20,23 +19,21 @@ public class UnusedStepsProvider implements ImplicitUsageProvider {
 
     public static final Collection<String> CUCUMBER_ANNOTATIONS = List.of(CUCUMBER_THEN_ANNOTATION, CUCUMBER_WHEN_ANNOTATION, CUCUMBER_GIVEN_ANNOTATION);
 
+    private final Checker isMethodUsedChecker = new IsMethodUsedChecker();
+
+    @Nullable
     @Override
-    public boolean isImplicitUsage(@NotNull PsiElement element) {
-        if (element instanceof PsiMethod) {
-            Checker checker = new IsMethodUsedChecker();
-            return AnnotationUtil.isAnnotated((PsiModifierListOwner) element, CUCUMBER_ANNOTATIONS, 0)
-                    && checker.check((PsiMethod) element);
+    public ProblemDescriptor[] checkMethod(@NotNull PsiMethod method, @NotNull InspectionManager manager, boolean isOnTheFly) {
+        ProblemsHolder problemsHolder = new ProblemsHolder(manager, method.getContainingFile(), isOnTheFly);
+        if (AnnotationUtil.isAnnotated(method, UnusedStepsProvider.CUCUMBER_ANNOTATIONS, 0)
+                && !isMethodUsedChecker.check(method)) {
+            problemsHolder.registerProblem(method.getAnnotations()[0],
+                    String.format("Step '%s' is never used",
+                            method.getAnnotations()[0].getParameterList().getAttributes()[0].getLiteralValue()),
+                    ProblemHighlightType.WARNING);
+            return problemsHolder.getResultsArray();
         }
-        return false;
+        return ProblemDescriptor.EMPTY_ARRAY;
     }
 
-    @Override
-    public boolean isImplicitRead(@NotNull PsiElement element) {
-        return false;
-    }
-
-    @Override
-    public boolean isImplicitWrite(@NotNull PsiElement element) {
-        return false;
-    }
 }

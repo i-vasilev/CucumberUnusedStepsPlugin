@@ -17,6 +17,10 @@
                          groupBundle="InspectionsBundle"
                          groupKey="isStepKeywordOther"
                          enabledByDefault="true"/>
-        <implicitUsageProvider implementation="ru.vasilev.unused_steps_plugin.providers.UnusedStepsProvider"/>
+        <localInspection implementationClass="ru.vasilev.unused_steps_plugin.providers.UnusedStepsProvider"
+                         displayName="Marks unused steps"
+                         groupBundle="InspectionsBundle"
+                         groupKey="unusedStepsProvider"
+                         enabledByDefault="true"/>
     </extensions>
 </idea-plugin>
