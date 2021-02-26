@@ -1,0 +1,22 @@
+<idea-plugin>
+    <id>ru.vasilev.CucumberUnusedStepsPlugin</id>
+    <name>CucumberUnusedSteps</name>
+    <vendor email="ilya.vasilev.vladislavovich@gmail.com" url="https://vk.com/piller97">Vasilev Ilya</vendor>
+    <version>1.0</version>
+
+    <description>This small plugin marks unused cucumber steps.</description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <actions/>
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection implementationClass="ru.vasilev.unused_steps_plugin.providers.IsStepKeywordOtherProvider"
+                         displayName="Is step has other keywords in scenarios"
+                         groupBundle="InspectionsBundle"
+                         groupKey="isStepKeywordOther"
+                         enabledByDefault="true"/>
+        <implicitUsageProvider implementation="ru.vasilev.unused_steps_plugin.providers.UnusedStepsProvider"/>
+    </extensions>
+</idea-plugin>
