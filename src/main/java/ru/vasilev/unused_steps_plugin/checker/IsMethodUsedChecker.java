@@ -48,7 +48,11 @@ public class IsMethodUsedChecker extends AbstractChecker {
         boolean isStepUsedInAttributes = false;
         for (PsiNameValuePair attribute :
                 attributes) {
-            if (step.getText().matches(Objects.requireNonNull(attribute.getLiteralValue()))) {
+            if (step.getText()
+                    .matches(
+                            Objects.requireNonNull(attribute.getLiteralValue())
+                            .replace("\\\\", "\\"))
+            ) {
                 isStepUsedInAttributes = true;
             }
         }
