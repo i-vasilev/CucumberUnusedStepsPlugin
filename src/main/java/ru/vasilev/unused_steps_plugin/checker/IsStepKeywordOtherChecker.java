@@ -1,8 +1,6 @@
 package ru.vasilev.unused_steps_plugin.checker;
 
 import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiMethod;
-import gherkin.ast.ScenarioDefinition;
 import gherkin.ast.Step;
 
 import java.util.Objects;

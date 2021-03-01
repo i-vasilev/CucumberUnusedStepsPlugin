@@ -3,6 +3,7 @@ package ru.vasilev.unused_steps_plugin.checker;
 import com.intellij.psi.PsiMethod;
 import gherkin.AstBuilder;
 import gherkin.Parser;
+import gherkin.ParserException;
 import gherkin.TokenMatcher;
 import gherkin.ast.Feature;
 import gherkin.ast.GherkinDocument;
@@ -30,8 +31,11 @@ public abstract class AbstractChecker implements Checker {
             TokenMatcher matcher = new TokenMatcher();
 
             String currentLine = readFile(file.getAbsolutePath());
-            GherkinDocument gherkinDocument = parser.parse(currentLine, matcher);
-            if (startChecking(gherkinDocument.getFeature(), method)) isMethodUsedInFeatures = true;
+            try {
+                GherkinDocument gherkinDocument = parser.parse(currentLine, matcher);
+                if (startChecking(gherkinDocument.getFeature(), method)) isMethodUsedInFeatures = true;
+            } catch (ParserException.CompositeParserException ignore) {
+            }
         }
         return isMethodUsedInFeatures;
     }
