@@ -14,10 +14,12 @@ public class IsMethodUsedChecker extends AbstractChecker {
     @Override
     protected boolean startChecking(Feature feature, PsiMethod method) {
         boolean isMethodUsedInFeature = false;
-        for (ScenarioDefinition scenario :
-                feature.getChildren()) {
-            if (isMethodUsedInScenario(scenario, method))
-                isMethodUsedInFeature = true;
+        if (feature != null) {
+            for (ScenarioDefinition scenario :
+                    feature.getChildren()) {
+                if (isMethodUsedInScenario(scenario, method))
+                    isMethodUsedInFeature = true;
+            }
         }
         return isMethodUsedInFeature;
     }
@@ -48,9 +50,8 @@ public class IsMethodUsedChecker extends AbstractChecker {
         boolean isStepUsedInAttributes = false;
         for (PsiNameValuePair attribute :
                 attributes) {
-            if (step.getText()
-                    .matches(
-                            Objects.requireNonNull(attribute.getLiteralValue())
+            if (step.getText().matches(
+                    Objects.requireNonNull(attribute.getLiteralValue())
                             .replace("\\\\", "\\"))
             ) {
                 isStepUsedInAttributes = true;

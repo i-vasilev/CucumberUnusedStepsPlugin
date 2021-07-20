@@ -16,8 +16,11 @@ public class UnusedStepsProvider extends AbstractBaseJavaLocalInspectionTool {
     public static final String CUCUMBER_WHEN_ANNOTATION = "cucumber.api.java.en.When";
     public static final String CUCUMBER_THEN_ANNOTATION = "cucumber.api.java.en.Then";
     public static final String CUCUMBER_GIVEN_ANNOTATION = "cucumber.api.java.en.Given";
+    public static final String CUCUMBER_6_WHEN_ANNOTATION = "io.cucumber.java.en.When";
+    public static final String CUCUMBER_6_THEN_ANNOTATION = "io.cucumber.java.en.Then";
+    public static final String CUCUMBER_6_GIVEN_ANNOTATION = "io.cucumber.java.en.Given";
 
-    public static final Collection<String> CUCUMBER_ANNOTATIONS = List.of(CUCUMBER_THEN_ANNOTATION, CUCUMBER_WHEN_ANNOTATION, CUCUMBER_GIVEN_ANNOTATION);
+    public static final Collection<String> CUCUMBER_ANNOTATIONS = List.of(CUCUMBER_THEN_ANNOTATION, CUCUMBER_WHEN_ANNOTATION, CUCUMBER_GIVEN_ANNOTATION, CUCUMBER_6_THEN_ANNOTATION, CUCUMBER_6_WHEN_ANNOTATION, CUCUMBER_6_GIVEN_ANNOTATION);
 
     private final Checker isMethodUsedChecker = new IsMethodUsedChecker();
 
